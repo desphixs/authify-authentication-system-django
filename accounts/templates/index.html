@@ -48,8 +48,8 @@
                     <a href="/dashboard/" class="py-2 px-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold rounded-lg text-xs transition duration-150">
                         Dashboard
                     </a>
-                    <!-- Point to the logout path (will be completed in Task 6, mapped temporarily) -->
-                    <a href="/logout/" class="py-2 px-4 bg-red-950/20 hover:bg-red-900/30 border border-red-900/30 text-red-300 font-semibold rounded-lg text-xs transition duration-150">
+                    <!-- We use Django's dynamic url template tag to reference our 'logout' view. -->
+                    <a href="{% url 'logout' %}" class="py-2 px-4 bg-red-950/20 hover:bg-red-900/30 border border-red-900/30 text-red-300 font-semibold rounded-lg text-xs transition duration-150">
                         <i class="fa-solid fa-arrow-right-from-bracket mr-1.5"></i> Logout
                     </a>
                 {% else %}

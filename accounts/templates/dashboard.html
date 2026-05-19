@@ -45,7 +45,10 @@
                 <a href="/" class="py-2 px-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold rounded-lg text-xs transition duration-150">
                     Home
                 </a>
-                <a href="/logout/" class="py-2 px-4 bg-red-950/20 hover:bg-red-900/30 border border-red-900/30 text-red-300 font-semibold rounded-lg text-xs transition duration-150">
+                <!-- We use Django's dynamic url template tag to point to our 'logout' path. -->
+                <!-- Analogy: Rather than writing down a static street address that might change, -->
+                <!-- we ask our signpost mapping database: "Find the route nicknamed 'logout' and insert it here!" -->
+                <a href="{% url 'logout' %}" class="py-2 px-4 bg-red-950/20 hover:bg-red-900/30 border border-red-900/30 text-red-300 font-semibold rounded-lg text-xs transition duration-150">
                     <i class="fa-solid fa-arrow-right-from-bracket mr-1.5"></i> Logout
                 </a>
             </div>
@@ -66,7 +69,8 @@
                     </h1>
                     <p class="text-slate-400 text-sm mt-1">Here is the detailed blueprint overview of your custom user account.</p>
                 </div>
-                <a href="/logout/" class="md:self-start py-3 px-5 bg-gradient-to-r from-red-700 to-rose-700 hover:from-red-600 hover:to-rose-600 text-white font-semibold rounded-xl text-sm transition-all duration-200 shadow-lg shadow-rose-500/10 flex items-center justify-center">
+                <!-- We use the dynamic url template tag to direct the user to the secure 'logout' path. -->
+                <a href="{% url 'logout' %}" class="md:self-start py-3 px-5 bg-gradient-to-r from-red-700 to-rose-700 hover:from-red-600 hover:to-rose-600 text-white font-semibold rounded-xl text-sm transition-all duration-200 shadow-lg shadow-rose-500/10 flex items-center justify-center">
                     <i class="fa-solid fa-arrow-right-from-bracket mr-2 text-xs"></i> Sign Out
                 </a>
             </div>

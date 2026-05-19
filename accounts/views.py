@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 # Analogy: Instead of hardcoding the import for our User class, get_user_model is like asking
 # the settings directory: "Which User blueprint is the active one right now?"
 # This is safe and keeps our code completely modular.
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import get_user_model, authenticate, login, logout
 # We import the login_required decorator from Django's authentication library.
 # Analogy: This acts as our professional digital Bouncer.
 # By placing this decorator directly above any view function, we instruct Django:
@@ -195,5 +195,31 @@ def dashboard_view(request):
     # If the bouncer lets them pass, request.user will hold the authenticated User object.
     # We load our protected dashboard template and return it to the logged-in user.
     return render(request, 'dashboard.html')
+
+
+# ==============================================================================
+# REAL-WORLD ANALOGY: Handing Back the Session Pass (The Logout Flow)
+# ------------------------------------------------------------------------------
+# Imagine you are leaving the members-only club for the day. You walk up to the exit desk.
+# 
+# To officially leave and lock your profile:
+# 1. You hand back your stamped Visitor Session Pass (Django's built-in logout() function).
+# 2. The clerk immediately cuts the pass in half (destroys the session record in the database)
+#    and throws it in the bin (deletes the cookie from the browser).
+# 3. Once you walk out the front exit doors, your wristband is completely gone. If you try to turn
+#    around and walk back into the VIP Lounge, the bouncer will immediately stop you!
+# 4. We then politely guide you back to the front entrance gate (redirect to the login page).
+# ==============================================================================
+
+# We define the logout_user view function to clear the current active session.
+def logout_user(request):
+    # We call Django's built-in logout function.
+    # This automatically locates the active session cookie for this request,
+    # completely deletes the session record from our database, and clears the cookie from the browser.
+    logout(request)
+    
+    # After successfully destroying their session pass, we redirect the user to the login page.
+    return redirect('login')
+
 
 

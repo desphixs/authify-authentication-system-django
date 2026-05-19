@@ -34,4 +34,9 @@ urlpatterns = [
     # We map the URL path 'dashboard/' directly to our protected dashboard_view function.
     # We give it a unique name 'dashboard' to handle post-login redirects and navigation links.
     path('dashboard/', views.dashboard_view, name='dashboard'),
+    # We map the URL path 'logout/' directly to our logout_user view function.
+    # We give it a unique name 'logout' so templates can safely trigger a sign-out sequence.
+    # Analogy: This is the official "Exit Door" signpost pointing to the exit desk.
+    path('logout/', views.logout_user, name='logout'),
 ]
+
