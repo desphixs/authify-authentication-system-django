@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # We import the admin module from Django to register our models for the Django Admin dashboard.
 from django.contrib import admin
 # We import the UserAdmin class, which is Django's built-in manager panel designed specifically for users.
@@ -26,8 +25,3 @@ from .models import User
 # This ensures that when we click a user in the Django Admin, we get the premium layout
 # with field groups, permission management, and password helper links.
 admin.site.register(User, UserAdmin)
-=======
-from django.contrib import admin
-
-# Register your models here.
->>>>>>> 0aff7bb56251b3d646a533bf3821a477dde53a5b
