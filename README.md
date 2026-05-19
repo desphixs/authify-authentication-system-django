@@ -1,4 +1,4 @@
-# Build Authify: A Secure User Dashboard
+# Build Authify: Authentication System
 
 ### Project Description
 
