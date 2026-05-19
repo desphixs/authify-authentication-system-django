@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # We import models from django.db to use base model fields if needed, though AbstractUser handles most.
 from django.db import models
 # We import AbstractUser, which provides all the standard fields (like password, first_name, last_name)
@@ -42,3 +43,8 @@ class User(AbstractUser):
     # We add 'username' here so that Django still prompts for a username when creating a superuser.
     # Analogy: When filling out a new VIP library card form, the librarian still asks for a username nickname.
     REQUIRED_FIELDS = ['username']
+=======
+from django.db import models
+
+# Create your models here.
+>>>>>>> 0aff7bb56251b3d646a533bf3821a477dde53a5b
