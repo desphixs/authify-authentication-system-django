@@ -139,3 +139,22 @@ STATIC_URL = 'static/'
 # This must be defined before running migrations for the first time, otherwise
 # Django will set up database tables using the old default model and cause major conflicts later.
 AUTH_USER_MODEL = 'accounts.User'
+
+# ==============================================================================
+# REAL-WORLD ANALOGY: The Bouncer's Redirection Instructions
+# ------------------------------------------------------------------------------
+# Imagine you try to walk straight past the bouncer into the club's VIP Private Lounge
+# (the protected Dashboard) without a valid visitor session pass.
+# 
+# The bouncer stops you. But instead of just throwing you into the street and locking the
+# door (which would leave the visitor confused!), the bouncer needs to know where to direct you.
+# 
+# Defining LOGIN_URL is like giving the bouncer a clear instruction manual:
+# "When you kick an unauthenticated visitor out of a protected room, politely walk them
+# over to the Login registration gate (our view path named 'login') so they can sign in!"
+# ==============================================================================
+
+# We tell Django where to redirect unauthenticated users when they try to access a protected view.
+# By passing the URL name 'login', Django will look up the path mapped to name='login' in our URLs.
+LOGIN_URL = 'login'
+

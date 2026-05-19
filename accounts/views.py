@@ -8,6 +8,12 @@ from django.shortcuts import render, redirect
 # the settings directory: "Which User blueprint is the active one right now?"
 # This is safe and keeps our code completely modular.
 from django.contrib.auth import get_user_model, authenticate, login
+# We import the login_required decorator from Django's authentication library.
+# Analogy: This acts as our professional digital Bouncer.
+# By placing this decorator directly above any view function, we instruct Django:
+# "Ensure the visitor has an active stamped session pass. If they don't, lock the door,
+# block the page, and kick them out straight to the login registration gate!"
+from django.contrib.auth.decorators import login_required
 
 # We call get_user_model to retrieve the active custom User model.
 User = get_user_model()
@@ -146,7 +152,48 @@ def login_user(request):
                 'error': 'Invalid email address or password. Please try again!'
             })
 
-    # If the request method is GET, the user is just visiting the page.
-    # We simply render the empty HTML login form.
     return render(request, 'login.html')
+
+
+# ==============================================================================
+# REAL-WORLD ANALOGY: The Public Plaza (Index Page)
+# ------------------------------------------------------------------------------
+# Imagine our home/index view is like the public plaza outside our member club.
+# Anyone walking on the street (authenticated members and completely anonymous guests)
+# is allowed to stand in the plaza and look around (this view is public).
+# However, we display a beautiful information board (our dynamic header):
+# 1. If they are a registered member wearing their wristband, we show them their name and a
+#    quick link to enter the private VIP Lounge (Go to Dashboard).
+# 2. If they are an unauthenticated guest, we show them signposts to get registered or sign in.
+# ==============================================================================
+
+# We define the index_view to handle the public home page of our application.
+def index_view(request):
+    # This view is completely public, so we don't put any decorators here.
+    # We simply load and return our home/index page template.
+    return render(request, 'index.html')
+
+
+# ==============================================================================
+# REAL-WORLD ANALOGY: The VIP Private Lounge (Protected Dashboard View)
+# ------------------------------------------------------------------------------
+# Imagine the dashboard is the private VIP lounge inside our members club.
+# We hire a strict Bouncer (the @login_required decorator) to stand right in front
+# of the lounge doors. 
+# 
+# When a visitor tries to pull open the door handle (request the dashboard URL):
+# 1. The Bouncer checks if they are wearing the active visitor session wristband.
+# 2. If yes, the bouncer smiles and lets them inside to see their details.
+# 3. If no, the bouncer immediately stops them, grabs their arm, and walks them back 
+#    to the lobby reception desk (redirects them straight to the Login page!).
+# ==============================================================================
+
+# We place the bouncer decorator directly above our dashboard view function.
+# This single line protects the entire view from anonymous guest visits.
+@login_required
+def dashboard_view(request):
+    # If the bouncer lets them pass, request.user will hold the authenticated User object.
+    # We load our protected dashboard template and return it to the logged-in user.
+    return render(request, 'dashboard.html')
+
 
