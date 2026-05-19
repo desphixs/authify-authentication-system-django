@@ -24,4 +24,8 @@ urlpatterns = [
     # We give it a unique name 'register' so we can refer to this path easily in HTML templates
     # or redirect statements using {% url 'register' %} or redirect('register').
     path('register/', views.register_user, name='register'),
+    # We map the URL path 'login/' directly to our login_user view function.
+    # We give it a unique name 'login' so we can refer to this path easily in templates
+    # and redirect statements (like our register_user view redirecting to 'login'!).
+    path('login/', views.login_user, name='login'),
 ]

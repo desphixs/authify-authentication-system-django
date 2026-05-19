@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 # Analogy: Instead of hardcoding the import for our User class, get_user_model is like asking
 # the settings directory: "Which User blueprint is the active one right now?"
 # This is safe and keeps our code completely modular.
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 
 # We call get_user_model to retrieve the active custom User model.
 User = get_user_model()
@@ -82,3 +82,71 @@ def register_user(request):
     # If the request method is GET, it means the user just typed in the URL or refreshed.
     # We simply render the empty HTML registration form.
     return render(request, 'register.html')
+
+
+# ==============================================================================
+# REAL-WORLD ANALOGY: The Secure Entry Gate (Login System)
+# ------------------------------------------------------------------------------
+# Imagine our user has already registered and got their physical membership card.
+# Now, they walk up to the entrance gate of the club:
+# 1. If they just walk up to look at the entrance lobby (GET request), we show them the beautiful entrance doors (the login form).
+# 2. If they present their email address and password (POST request), the gatekeeper performs two checks:
+#    - Authenticate: The gatekeeper takes their password, melts it in the special chemical bouncer machine (hashes it),
+#      and compares the melted result with the melted safe-key on their membership card in the file cabinet.
+#      If the keys match, the gatekeeper says: "Yes, you are indeed who you say you are!" (returns a User object).
+#      If they don't match, the gatekeeper rejects them.
+#    - Login: The gatekeeper hands them an active, stamped "Visitor Session Pass" (sets up the browser session).
+#      This pass stays in their pocket (cookie) so they don't have to keep proving their identity at every single door inside the club!
+# 3. Once logged in, we guide them straight into the VIP Lounge (the Dashboard page).
+# ==============================================================================
+
+# We define the view function to handle user login.
+def login_user(request):
+    # We check if the browser sent a POST request (meaning the user clicked "Sign In" on the form).
+    if request.method == 'POST':
+        # We extract the email address directly from the login form.
+        # .strip() removes any accidental spaces the user might have typed at the start/end.
+        email = request.POST.get('email', '').strip()
+        # We extract the password directly from the login form.
+        password = request.POST.get('password', '')
+
+        # ---- VALIDATION 1: Ensure all fields are filled in ----
+        if not email or not password:
+            # We send them back to the login page, displaying a clear validation error.
+            return render(request, 'login.html', {
+                'error': 'Both email and password are required to sign in!'
+            })
+
+        # ---- STEP 2: Authenticate the user against the database ----
+        # In our custom model, we configured 'email' as the main login identifier (USERNAME_FIELD).
+        # However, Django's built-in 'authenticate' function always expects the login identifier
+        # to be passed as the parameter named 'username'.
+        # Therefore, we pass email under 'username=email' so the bouncer knows what to search for!
+        user = authenticate(request, username=email, password=password)
+
+        # ---- STEP 3: Check if authentication succeeded ----
+        # If the email exists and the password hash matches, authenticate returns the User object.
+        # If not, it returns None (rejecting the user).
+        if user is not None:
+            # ---- STEP 4: Start the session ----
+            # We call Django's built-in login() function to stamp their session pass.
+            # This creates a secure, temporary session cookie in their browser.
+            login(request, user)
+            
+            # ---- STEP 5: Redirect to the dashboard ----
+            # Once authenticated and logged in, we send them to their dashboard home page.
+            # (We will create and name this route 'dashboard' in Task 5).
+            return redirect('dashboard')
+        else:
+            # If the user is None, the credentials were invalid.
+            # We reload the login form with a clear error message.
+            # Note: For security, we keep the error slightly generic so hackers don't know
+            # whether it was the email or the password that was wrong!
+            return render(request, 'login.html', {
+                'error': 'Invalid email address or password. Please try again!'
+            })
+
+    # If the request method is GET, the user is just visiting the page.
+    # We simply render the empty HTML login form.
+    return render(request, 'login.html')
+
